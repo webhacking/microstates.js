@@ -60,5 +60,9 @@ describe('State', () => {
         expect(ms.state.node.node).toBe(ms.state.node.node);
       });
     });
+    it('returns the same node when composed state is read twice', () => {
+      expect(ms.state.node).toBe(ms.state.node);
+      expect(ms.state.node.node).toBe(ms.state.node.node);
+    });
   });
 });
