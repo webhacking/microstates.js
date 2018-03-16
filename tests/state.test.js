@@ -60,9 +60,19 @@ describe('State', () => {
         expect(ms.state.node.node).toBe(ms.state.node.node);
       });
     });
-    it('returns the same node when composed state is read twice', () => {
-      expect(ms.state.node).toBe(ms.state.node);
-      expect(ms.state.node.node).toBe(ms.state.node.node);
+    
+    describe('reading getters', () => {
+      class Node {
+        node = Node;
+  
+        get data() {
+          return {};
+        }
+      }
+      it('returns same value', () => {
+        let ms = create(Node);
+        expect(ms.state.data).toBe(ms.state.data);
+      });
     });
   });
 });
