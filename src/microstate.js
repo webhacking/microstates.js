@@ -11,7 +11,7 @@ export default class Microstate {
     
     return append(map(transition => transition, this), {
       get state() {
-        return state();
+        return collapseState(tree, value);
       }
     });
   }
