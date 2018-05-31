@@ -10,7 +10,6 @@ import SymbolObservable from "symbol-observable";
 import desugar from './desugar';
 import isSimple from './is-simple';
 import keys from './keys';
-import values from './values';
 import shallowDiffers from './shallow-differs';
 import thunk from './thunk';
 import types, { params, toType } from './types';
