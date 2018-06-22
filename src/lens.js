@@ -66,8 +66,8 @@ export function set(lens, value, context) {
 export const transparent = Lens(value => value, context => context);
 
 export function lensKey(key) {
-  let get = context => context[key];
-  let set = (value, context) => append(context, {[key]: value});
+  let get = context => context != null ? context[key] : undefined;
+  let set = (value, context) => append(context || {}, {[key]: value});
 
   return Lens(get, set);
 }

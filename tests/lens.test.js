@@ -75,9 +75,51 @@ describe('lensPath', () => {
   it('can be used to access deeply nested values', () => {
     expect(view(message_hello, { message: { hello: 'world' }})).toEqual('world');
   });
-
   it('can be used to set deeply nested values', () => {
     expect(set(message_hello, 'planet', {message: {hello: 'world' }}))
       .toEqual({message: { hello: 'planet'}});
+  });
+
+  describe('punchouts', () => {
+    const mkPunchout = () => set(lensPath(['x', 'y', 'z', 'w']), 5, undefined);
+
+    it('should not throw', function() {
+      expect(mkPunchout).not.toThrowError();
+    });
+    it('should create a deeply nested object', function() {
+      const punchout = mkPunchout();
+      expect(punchout).toHaveProperty('x');
+      expect(punchout.x).toHaveProperty('y');
+      expect(punchout.x.y).toHaveProperty('z');
+      expect(punchout.x.y.z).toHaveProperty('w');
+      expect(punchout.x.y.z.w).toBe(5);
+    });
+  });
+
+  describe('maintains Types', () => {
+    class Z {
+      constructor() {
+        this.w = 5;
+      }
+    }
+    class Y {
+      constructor() {
+        this.z = new Z();
+      }
+    }
+    class X {
+      constructor() {
+        this.y = new Y();
+      }
+    }
+
+    const x = set(lensPath(['y', 'z', 'w']), 10, new X());
+
+    it('should maintain type at any layer of the path', function() {
+      expect(x).toBeInstanceOf(X);
+      expect(x.y).toBeInstanceOf(Y);
+      expect(x.y.z).toBeInstanceOf(Z);
+      expect(x.y.z.w).toBe(10);
+    });
   });
 });
